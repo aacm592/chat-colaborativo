@@ -1,0 +1,162 @@
+/* Paleta de colores - Tema Oscuro */
+:root {
+  --bg-color: #0f1115;       /* Fondo general del navegador */
+  --chat-bg: #1c1f26;        /* Fondo del contenedor del chat */
+  --primary: #453A96;        /* Tu color morado para acentos y cabecera */
+  --primary-hover: #574baf;  /* Morado más claro para interacciones */
+  --accent: #029062;         /* Tu color verde para nombres de usuario */
+  --system-text: #8b92a5;    /* Texto secundario/sistema */
+  --msg-bg: #282c35;         /* Fondo de las burbujas de mensaje */
+  --border-color: #2e323d;   /* Bordes sutiles */
+  --text-primary: #e4e6eb;   /* Texto principal */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Contenedor principal */
+.chat-container {
+  width: 100%;
+  max-width: 650px;
+  height: 85vh;
+  background: var(--chat-bg);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.chat-header {
+  margin: 0;
+  padding: 20px;
+  background-color: var(--primary);
+  color: #ffffff;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #342b73;
+}
+
+/* Área de mensajes */
+.chat-box {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Personalización del scrollbar para el tema oscuro */
+.chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-box::-webkit-scrollbar-track {
+  background: var(--chat-bg);
+}
+.chat-box::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+.chat-box::-webkit-scrollbar-thumb:hover {
+  background: var(--system-text);
+}
+
+/* Estilos de los mensajes */
+.message-row {
+  display: flex;
+  width: 100%;
+}
+
+.message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+}
+
+.message.user {
+  background-color: var(--msg-bg);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 2px;
+  color: var(--text-primary);
+}
+
+.message.system {
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  color: var(--system-text);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.message-author {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+/* Área de entrada de texto */
+.chat-form {
+  display: flex;
+  padding: 16px;
+  background: var(--chat-bg);
+  border-top: 1px solid var(--border-color);
+  gap: 12px;
+}
+
+.chat-input {
+  flex-grow: 1;
+  padding: 12px 16px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-input::placeholder {
+  color: var(--system-text);
+}
+
+.chat-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(69, 58, 150, 0.2);
+}
+
+.chat-submit {
+  padding: 10px 24px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.chat-submit:hover {
+  background-color: var(--primary-hover);
+}
+
+.chat-submit:active {
+  transform: scale(0.97);
+}

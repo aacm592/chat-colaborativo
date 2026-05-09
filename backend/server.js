@@ -1,14 +1,14 @@
 const WebSocket = require('ws');
 const http = require('http');
 
-// 1. Crear servidor HTTP base y acoplar el servidor WebSocket
+// Crear servidor HTTP base y acoplar el servidor WebSocket
 const server = http.createServer();
 const wss = new WebSocket.Server({ server });
 
 // Función auxiliar para asignar un identificador temporal
 const generateUsername = () => `Usuario_${Math.floor(Math.random() * 10000)}`;
 
-// 2. Escuchar el evento de nueva conexión
+// Escuchar el evento de nueva conexión
 wss.on('connection', (ws) => {
     // Asignar el nombre temporal al cliente que se acaba de conectar
     ws.username = generateUsername();
@@ -20,9 +20,8 @@ wss.on('connection', (ws) => {
         message: `${ws.username} se ha unido al chat.` 
     }));
 
-    // 3. Escuchar los mensajes que envía este cliente
+    // Escuchar los mensajes que envía este cliente y enviarlo a todos los conectados
     ws.on('message', (message) => {
-        // Tomar el mensaje y retransmitirlo a todos los conectados
         broadcast(JSON.stringify({ 
             type: 'chat', 
             user: ws.username, 
@@ -30,10 +29,9 @@ wss.on('connection', (ws) => {
         }));
     });
 
-    // 4. Escuchar el evento de desconexión del cliente
+    // Escuchar y notificar a todos el evento de desconexión del cliente
     ws.on('close', () => {
         console.log(`${ws.username} se ha desconectado.`);
-        // Notificar a todos los usuarios que alguien salió
         broadcast(JSON.stringify({ 
             type: 'system', 
             message: `${ws.username} ha abandonado el chat.` 
@@ -51,7 +49,7 @@ function broadcast(data) {
     });
 }
 
-// 5. Levantar el servidor en el puerto 8080
+// Levantar el servidor en el puerto 8080
 server.listen(8080, () => {
     console.log('Servidor WebSocket escuchando en ws://localhost:8080');
 });
