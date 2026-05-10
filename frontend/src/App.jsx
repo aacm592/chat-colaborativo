@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css'; // Asegura la correcta vinculación de los estilos
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "./firebase";
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  
+  const [user, setUser] = useState(null);
+
   const ws = useRef(null);
   const messagesEndRef = useRef(null); // Referencia ancla para el auto-scroll
 
@@ -31,6 +34,14 @@ function App() {
     };
   }, []);
 
+  const loginGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    setUser(result.user);
+  } catch (error) {
+    console.log(error);
+  }
+};
   const sendMessage = (e) => {
     e.preventDefault();
     if (inputValue.trim() && ws.current) {
@@ -43,6 +54,14 @@ function App() {
     <div className="chat-container">
       <h2 className="chat-header">Parlet</h2>
       
+      {!user ? (
+  <button onClick={loginGoogle}>
+    Login con Google
+  </button>
+) : (
+  <p>Bienvenido {user.displayName}</p>
+)}
+
       <div className="chat-box">
         {messages.map((msg, index) => (
           <div key={index} className="message-row">
