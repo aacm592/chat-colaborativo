@@ -42,10 +42,23 @@ function App() {
     console.log(error);
   }
 };
+
+// Sincronizar el nombre con el servidor cuando el usuario inicie sesión
+  useEffect(() => {
+    if (user && ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify({
+        type: 'update_username',
+        username: user.displayName
+      }));
+    }
+  }, [user]);
   const sendMessage = (e) => {
     e.preventDefault();
     if (inputValue.trim() && ws.current) {
-      ws.current.send(inputValue);
+      ws.current.send(JSON.stringify({ 
+        type: 'chat', 
+        message: inputValue 
+      }));
       setInputValue('');
     }
   };

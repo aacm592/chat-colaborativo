@@ -20,13 +20,33 @@ wss.on('connection', (ws) => {
         message: `${ws.username} se ha unido al chat.` 
     }));
 
-    // Escuchar los mensajes que envía este cliente y enviarlo a todos los conectados
+    // Escuchar los mensajes que envía este cliente
     ws.on('message', (message) => {
-        broadcast(JSON.stringify({ 
-            type: 'chat', 
-            user: ws.username, 
-            message: message.toString() 
-        }));
+        try {
+            // Convertir el buffer a string y parsear el JSON
+            const data = JSON.parse(message.toString());
+
+            if (data.type === 'update_username') {
+                // Lógica para actualizar el nombre
+                const oldName = ws.username;
+                ws.username = data.username;
+                
+                // Avisar a la sala del cambio de identidad
+                broadcast(JSON.stringify({
+                    type: 'system',
+                    message: `${oldName} ahora es ${ws.username}.`
+                }));
+            } else if (data.type === 'chat') {
+                // Lógica normal del chat
+                broadcast(JSON.stringify({ 
+                    type: 'chat', 
+                    user: ws.username, 
+                    message: data.message 
+                }));
+            }
+        } catch (error) {
+            console.error("Error al procesar el mensaje entrante:", error);
+        }
     });
 
     // Escuchar y notificar a todos el evento de desconexión del cliente
