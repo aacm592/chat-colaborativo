@@ -26,7 +26,14 @@ function App() {
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, data]);
+      
+      if (data.type === 'history') {
+        // Al conectar, cargar todo el historial de golpe
+        setMessages(data.data);
+      } else {
+        // En funcionamiento normal, agregar el mensaje al estado anterior
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
     };
 
     return () => {
