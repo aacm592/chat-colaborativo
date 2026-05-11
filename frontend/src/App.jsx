@@ -22,7 +22,7 @@ function App() {
   }, [messages]);
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8080');
+    ws.current = new WebSocket('wss://dividable-overnight-coexist.ngrok-free.dev');
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
