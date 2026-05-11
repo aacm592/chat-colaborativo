@@ -66,7 +66,7 @@ wss.on('connection', (ws) => {
         
         const leaveMsg = { type: 'system', message: `${ws.username} ha abandonado el chat.` };
         chatHistory.push(leaveMsg);
-        if (chatHistory.length > 100) chatHistory.shift();
+        if (chatHistory.length > 10000) chatHistory.shift();
         
         broadcast(JSON.stringify(leaveMsg));
     });
