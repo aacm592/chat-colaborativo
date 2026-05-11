@@ -26,7 +26,7 @@ wss.on('connection', (ws) => {
     // 2. Crear mensaje de ingreso, guardarlo y notificar a todos
     const joinMsg = { type: 'system', message: `${ws.username} se ha unido al chat.` };
     chatHistory.push(joinMsg);
-    if (chatHistory.length > 100) chatHistory.shift(); // Mantener solo los últimos 100 mensajes
+    if (chatHistory.length > 10000) chatHistory.shift(); // Mantener solo los últimos 10000 mensajes
     
     broadcast(JSON.stringify(joinMsg));
 
@@ -44,14 +44,14 @@ wss.on('connection', (ws) => {
                 // Crear mensaje de sistema, guardarlo y avisar a la sala
                 const updateMsg = { type: 'system', message: `${oldName} ahora es ${ws.username}.` };
                 chatHistory.push(updateMsg);
-                if (chatHistory.length > 100) chatHistory.shift();
+                if (chatHistory.length > 10000) chatHistory.shift();
                 
                 broadcast(JSON.stringify(updateMsg));
             } else if (data.type === 'chat') {
                 // Lógica normal del chat: crear mensaje, guardarlo y retransmitir
                 const chatMsg = { type: 'chat', user: ws.username, message: data.message };
                 chatHistory.push(chatMsg);
-                if (chatHistory.length > 100) chatHistory.shift();
+                if (chatHistory.length > 10000) chatHistory.shift();
                 
                 broadcast(JSON.stringify(chatMsg));
             }
